@@ -101,7 +101,7 @@ A collection of essential developer tools built with Next.js 13 and Tailwind CSS
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/devtools-hub.git
+git clone https://github.com/orz-ai/devtools.git
 ```
 
 2. Navigate to the project directory:
