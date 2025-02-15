@@ -12,19 +12,14 @@ const inter = InterFont({
 
 export const metadata: Metadata = {
   title: 'DevTools Hub',
-  description: 'A collection of useful developer tools',
-  openGraph: {
-    title: 'DevTools Hub',
-    description: 'A collection of useful developer tools',
-    url: 'https://orz.ai',
-  },
-  twitter: {
-    title: 'DevTools Hub',
-    description: 'A collection of useful developer tools',
-  },
+  description: 'A collection of essential developer tools',
   robots: {
     index: true,
     follow: true,
+  },
+  icons: {
+    icon: '/favicon.jpg',
+    apple: '/favicon.jpg',
   },
 };
 
