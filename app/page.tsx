@@ -86,6 +86,13 @@ const tools = [
     href: "/tools/proto",
     category: "DevOps",
   },
+  {
+    name: "Image Compressor",
+    description: "Compress images to reduce file size",
+    icon: TicketCheck,
+    href: "/tools/image-compressor",
+    category: "Image",
+  },
 
 ]
 
