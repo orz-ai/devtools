@@ -93,6 +93,13 @@ const tools = [
     href: "/tools/image-compressor",
     category: "Image",
   },
+  {
+    name: "Golang Code Generator",
+    description: "Generate Golang code from everything",
+    icon: FileCode2,
+    href: "/tools/go",
+    category: "Code",
+  },
 
 ]
 
