@@ -17,6 +17,13 @@ const tools = [
     category: "Data Format",
   },
   {
+    name: "Code Generator",
+    description: "Generate code from everything",
+    icon: FileCode2,
+    href: "/tools/code",
+    category: "Code",
+  },
+  {
     name: "SQL Formatter",
     description: "Format SQL queries for better readability",
     icon: Database,
@@ -93,13 +100,7 @@ const tools = [
     href: "/tools/image-compressor",
     category: "Image",
   },
-  {
-    name: "Golang Code Generator",
-    description: "Generate Golang code from everything",
-    icon: FileCode2,
-    href: "/tools/go",
-    category: "Code",
-  },
+
 
 ]
 
