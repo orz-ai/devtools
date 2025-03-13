@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Slider } from "@/components/ui/slider"
@@ -20,11 +20,47 @@ export default function ImageCompressor() {
     const [isCompressing, setIsCompressing] = useState(false)
     const fileInputRef = useRef<HTMLInputElement>(null)
 
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (!originalImage) return
+
+            if (e.key === 'ArrowLeft') {
+                e.preventDefault()
+                setQuality(prev => {
+                    const newValue = Math.max(1, prev[0] - 1)
+                    return [newValue]
+                })
+            } else if (e.key === 'ArrowRight') {
+                e.preventDefault()
+                setQuality(prev => {
+                    const newValue = Math.min(100, prev[0] + 1)
+                    return [newValue]
+                })
+            }
+        }
+
+        window.addEventListener('keydown', handleKeyDown)
+        return () => window.removeEventListener('keydown', handleKeyDown)
+    }, [originalImage])
+
+    useEffect(() => {
+        if (originalImage && quality[0]) {
+            if (quality[0] === 100) {
+                setCompressedImage({
+                    file: originalImage.file,
+                    preview: originalImage.preview,
+                    size: originalImage.size
+                })
+            } else {
+                compressImage(originalImage.file, quality[0])
+            }
+        }
+    }, [quality, originalImage])
+
     const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]
         if (!file) return
 
-        // 检查文件类型
         if (!file.type.startsWith('image/')) {
             alert('Please select an image file')
             return
@@ -32,25 +68,34 @@ export default function ImageCompressor() {
 
         const reader = new FileReader()
         reader.onload = (e) => {
-            setOriginalImage({
+            const imageInfo = {
                 file: file,
                 preview: e.target?.result as string,
                 size: file.size
-            })
-            compressImage(file, quality[0])
+            }
+            setOriginalImage(imageInfo)
+            setCompressedImage(imageInfo)
+            setQuality([80])
         }
         reader.readAsDataURL(file)
     }
 
-    const compressImage = async (file: File, quality: number) => {
+    const compressImage = async (file: File, qualityValue: number) => {
         try {
             setIsCompressing(true)
 
+            if (qualityValue === 100) {
+                setCompressedImage(originalImage)
+                setIsCompressing(false)
+                return
+            }
+
             const options = {
-                maxSizeMB: 1,
-                maxWidthOrHeight: 1920,
+                maxSizeMB: file.size / (1024 * 1024),
+                maxWidthOrHeight: 4096,
                 useWebWorker: true,
-                quality: quality / 100
+                quality: qualityValue / 100,
+                initialQuality: qualityValue / 100,
             }
 
             const compressedFile = await imageCompression(file, options)
@@ -62,21 +107,18 @@ export default function ImageCompressor() {
                     preview: e.target?.result as string,
                     size: compressedFile.size
                 })
+                setIsCompressing(false)
             }
             reader.readAsDataURL(compressedFile)
         } catch (error) {
             console.error('Error compressing image:', error)
             alert('Error compressing image')
-        } finally {
             setIsCompressing(false)
         }
     }
 
     const handleQualityChange = (value: number[]) => {
         setQuality(value)
-        if (originalImage) {
-            compressImage(originalImage.file, value[0])
-        }
     }
 
     const formatSize = (bytes: number) => {
@@ -106,7 +148,9 @@ export default function ImageCompressor() {
         <div className="space-y-6">
             <div>
                 <h1 className="text-2xl font-bold">Image Compressor</h1>
-                <p className="text-muted-foreground">Compress and optimize your images</p>
+                <p className="text-muted-foreground">
+                    Compress and optimize your images. Use arrow keys to fine-tune quality.
+                </p>
             </div>
 
             <div className="space-y-4">
@@ -133,7 +177,14 @@ export default function ImageCompressor() {
                         {originalImage && (
                             <div className="space-y-4">
                                 <div className="space-y-2">
-                                    <label className="text-sm font-medium">Quality: {quality}%</label>
+                                    <div className="flex justify-between items-center">
+                                        <label className="text-sm font-medium">
+                                            Quality: {quality[0]}%
+                                        </label>
+                                        <span className="text-xs text-muted-foreground">
+                                            Use ← → keys to adjust
+                                        </span>
+                                    </div>
                                     <Slider
                                         value={quality}
                                         onValueChange={handleQualityChange}
@@ -141,6 +192,7 @@ export default function ImageCompressor() {
                                         max={100}
                                         step={1}
                                         className="w-full"
+                                        disabled={isCompressing}
                                     />
                                 </div>
                             </div>
