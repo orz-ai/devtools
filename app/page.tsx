@@ -100,7 +100,13 @@ const tools = [
     href: "/tools/image-compressor",
     category: "Image",
   },
-
+  {
+    name: "Git Repo Card",
+    description: "Make a git repo card",
+    icon: TicketCheck,
+    href: "/tools/repo-card",
+    category: "Image",
+  },
 
 ]
 
