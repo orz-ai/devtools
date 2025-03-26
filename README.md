@@ -4,7 +4,7 @@ A collection of essential developer tools built with Next.js 13 and Tailwind CSS
 
 ![DevTools Hub Screenshot](screenshot.png)
 
-[Online Site](https://dev.hackfun.net)
+[Online Site](https://dev.orz.ai)
 
 ## 🚀 Features
 
