@@ -243,7 +243,10 @@ export default function RepoCardGenerator() {
             // 给浏览器一点时间来应用截图样式
             setTimeout(async () => {
                 try {
-                    const canvas = await html2canvas(cardRef.current, {
+                    if (!cardRef.current) {
+                        throw new Error("Card element not found");
+                    }
+                    const canvas = await html2canvas(cardRef.current as HTMLElement, {
                         scale: 2,
                         backgroundColor: theme === "dark" ? "#1f2937" : "#ffffff"
                     })
