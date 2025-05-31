@@ -6,6 +6,8 @@ A collection of essential developer tools built with Next.js 13 and Tailwind CSS
 
 [Online Site](https://dev.hackfun.net)
 
+[中文文档](./README_CN.md)
+
 ## 🚀 Features
 
 ### Development Tools
@@ -180,54 +182,3 @@ devtools-hub/
 ```bash
 mkdir app/tools/your-tool-name
 ```
-
-2. Create the tool component:
-```tsx
-// app/tools/your-tool-name/page.tsx
-"use client"
-
-export default function YourTool() {
-    return (
-        // Your tool implementation
-    )
-}
-```
-
-3. Add the tool to the navigation menu.
-
-### Code Style
-
-- Follow the TypeScript + React best practices
-- Use ES6+ features
-- Follow the existing component patterns
-- Write meaningful comments
-- Use proper TypeScript types
-
-### Testing
-
-Run the test suite:
-```bash
-npm run test
-# or
-yarn test
-```
-
-## 📦 Deployment
-
-### Vercel (Recommended)
-
-1. Push your code to GitHub
-2. Import your repository in Vercel
-3. Configure your deployment settings
-4. Deploy
-
-### Manual Deployment
-
-1. Build the application:
-```bash
-npm run build
-```
-
-2. Deploy the `/.next` directory to your hosting provider
-
-## 🤝 Contributing
