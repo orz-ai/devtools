@@ -6,7 +6,7 @@
 
 ![DevTools Hub 截图](screenshot.png)
 
-[在线体验](https://dev.hackfun.net)
+[在线体验](https://dev.orz.ai)
 
 ## 🚀 功能特性
 
