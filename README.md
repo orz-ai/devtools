@@ -70,6 +70,11 @@ A collection of essential developer tools built with Next.js 13 and Tailwind CSS
   - Syntax highlighting
   - Customizable formatting
   - Copy formatted code
+- **ID Watermark Tool**
+  - Upload ID card images
+  - Customize watermark text, font size, opacity, and angle
+  - Real-time watermark preview
+  - Download watermarked images
 
 ### UI/UX Features
 
