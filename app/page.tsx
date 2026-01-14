@@ -2,112 +2,104 @@
 
 import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Wrench, Code2, Database, Lock, Search, FileJson, Hash, Binary, FileCode2, Regex, Terminal, Braces, TicketCheck } from "lucide-react"
+import { Wrench, Code2, Database, Lock, Search, FileJson, Hash, Binary, FileCode2, Regex, Terminal, Braces, TicketCheck, Image as ImageIcon } from "lucide-react"
 import Link from "next/link"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
+import { useI18n } from "@/components/i18n-provider"
 
-const tools = [
+const toolsConfig = [
   {
-    name: "JSON Formatter",
-    description: "Format and validate JSON data with syntax highlighting",
+    key: "jsonFormatter",
     icon: Braces,
     href: "/tools/json-formatter",
-    category: "Data Format",
+    category: "dataFormat",
   },
   {
-    name: "Code Generator",
-    description: "Generate code from everything",
+    key: "codeGenerator",
     icon: FileCode2,
     href: "/tools/code",
-    category: "Code",
+    category: "code",
   },
   {
-    name: "SQL Formatter",
-    description: "Format SQL queries for better readability",
+    key: "sqlFormatter",
     icon: Database,
     href: "/tools/sql-formatter",
-    category: "Data Format",
+    category: "dataFormat",
   },
   {
-    name: "Timestamp Converter",
-    description: "Convert timestamps to human-readable formats",
+    key: "timestamp",
     icon: Hash,
     href: "/tools/timestamp",
-    category: "Date & Time",
+    category: "dateTime",
   },
   {
-    name: "Base64 Encoder/Decoder",
-    description: "Encode and decode Base64 strings",
+    key: "base64",
     icon: Binary,
     href: "/tools/base64",
-    category: "Encoding",
+    category: "encoding",
   },
   {
-    name: "URL Encoder/Decoder",
-    description: "Encode and decode URLs",
+    key: "urlCodec",
     icon: Lock,
     href: "/tools/url-codec",
-    category: "Encoding",
+    category: "encoding",
   },
   {
-    name: "JWT Decoder",
-    description: "Decode and verify JSON Web Tokens",
+    key: "jwt",
     icon: FileJson,
     href: "/tools/jwt",
-    category: "Security",
+    category: "security",
   },
   {
-    name: "Hash Generator",
-    description: "Generate various hash formats (MD5, SHA-1, SHA-256)",
+    key: "hash",
     icon: Hash,
     href: "/tools/hash",
-    category: "Security",
+    category: "security",
   },
   {
-    name: "Code Beautifier",
-    description: "Beautify and format various programming languages",
+    key: "codeBeautifier",
     icon: FileCode2,
     href: "/tools/code-beautifier",
-    category: "Code",
+    category: "code",
   },
   {
-    name: "Regex Tester",
-    description: "Test and validate regular expressions",
+    key: "regex",
     icon: Regex,
     href: "/tools/regex",
-    category: "Code",
+    category: "code",
   },
   {
-    name: "Cron Expression Generator",
-    description: "Generate and validate cron expressions",
+    key: "cron",
     icon: Terminal,
     href: "/tools/cron",
-    category: "DevOps",
+    category: "devops",
   },
   {
-    name: "Proto Beautifier",
-    description: "Beautify Protocol Buffers and Renumber the fields",
+    key: "proto",
     icon: TicketCheck,
     href: "/tools/proto",
-    category: "DevOps",
+    category: "devops",
   },
   {
-    name: "Image Compressor",
-    description: "Compress images to reduce file size",
-    icon: TicketCheck,
+    key: "imageCompressor",
+    icon: ImageIcon,
     href: "/tools/image-compressor",
-    category: "Image",
+    category: "image",
   },
   {
-    name: "Git Repo Card",
-    description: "Make a git repo card",
+    key: "repoCard",
     icon: TicketCheck,
     href: "/tools/repo-card",
-    category: "Image",
+    category: "image",
   },
-
+  {
+    key: "idWatermark",
+    href: "/tools/id-watermark",
+    icon: ImageIcon,
+    category: "image",
+  },
 ]
 
 const ITEMS_PER_PAGE = 9
@@ -131,12 +123,15 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState("")
   const [currentPage, setCurrentPage] = useState(1)
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
+  const { t } = useI18n()
 
-  const categories = Array.from(new Set(tools.map(tool => tool.category)))
+  const categories = Array.from(new Set(toolsConfig.map(tool => tool.category)))
 
-  const filteredTools = tools.filter(tool => {
-    const matchesSearch = tool.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      tool.description.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredTools = toolsConfig.filter(tool => {
+    const toolName = t(`tools.${tool.key}`)
+    const toolDesc = t(`descriptions.${tool.key}`)
+    const matchesSearch = toolName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      toolDesc.toLowerCase().includes(searchQuery.toLowerCase())
     const matchesCategory = !selectedCategory || tool.category === selectedCategory
     return matchesSearch && matchesCategory
   })
@@ -151,10 +146,10 @@ export default function Home() {
         <div className="relative">
           <div className="absolute inset-0 -z-10 bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 blur-3xl" />
           <h1 className="text-5xl font-bold bg-gradient-to-br from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent">
-            Developer Tools Hub
+            {t('home.title')}
           </h1>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto mt-4">
-            A comprehensive collection of essential tools for developers. Format, encode, decode, and validate with ease.
+            {t('home.subtitle')}
           </p>
         </div>
       </div>
@@ -163,7 +158,7 @@ export default function Home() {
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
           <Input
-            placeholder="Search tools..."
+            placeholder={t('home.searchPlaceholder')}
             className="pl-10 h-12 text-lg"
             value={searchQuery}
             onChange={(e) => {
@@ -183,7 +178,7 @@ export default function Home() {
             }}
             className="rounded-full"
           >
-            All
+            {t('home.categories.all')}
           </Button>
           {categories.map((category) => (
             <Button
@@ -196,13 +191,14 @@ export default function Home() {
               }}
               className="rounded-full"
             >
-              {category}
+              {t(`home.categories.${category}`)}
             </Button>
           ))}
         </div>
       </div>
 
       <motion.div
+        key={`${currentPage}-${selectedCategory}-${searchQuery}`}
         variants={container}
         initial="hidden"
         animate="show"
@@ -219,14 +215,14 @@ export default function Home() {
                       <Icon className="h-6 w-6 text-primary transition-transform group-hover:scale-110" />
                     </div>
                     <div className="space-y-2">
-                      <h2 className="font-semibold text-xl">{tool.name}</h2>
+                      <h2 className="font-semibold text-xl">{t(`tools.${tool.key}`)}</h2>
                       <p className="text-sm text-muted-foreground line-clamp-2">
-                        {tool.description}
+                        {t(`descriptions.${tool.key}`)}
                       </p>
                     </div>
                     <div className="flex items-center text-xs">
                       <span className="px-3 py-1 rounded-full bg-primary/5 text-primary/80 font-medium">
-                        {tool.category}
+                        {t(`home.categories.${tool.category}`)}
                       </span>
                     </div>
                   </div>
