@@ -15,6 +15,10 @@ const toolsConfig = [
     href: "/tools/json-formatter",
   },
   {
+    key: "jwt",
+    href: "/tools/jwt",
+  },
+  {
     key: "sqlFormatter",
     href: "/tools/sql-formatter",
   },
